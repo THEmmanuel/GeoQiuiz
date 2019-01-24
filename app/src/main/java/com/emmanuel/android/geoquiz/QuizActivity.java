@@ -1,5 +1,6 @@
 package com.emmanuel.android.geoquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,14 +12,16 @@ import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
+    private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
+    private Button mCheatButton;
     private Button mFalseButton;
     private Button mTrueButton;
     private ImageButton mNextButton;
     private TextView mQuestionTextView;
     private ImageButton mPreviousButton;
-    private static final String TAG = "QuizActivity";
-    private static final String KEY_INDEX = "index";
-   // private int scores = 0;
+    private int scores = 0;
+
 
     private Question[] mQuestionBank = new Question[]{
             new Question(R.string.question_australia, true),
@@ -50,7 +53,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAnswer(true);
-                //disableButtons();
             }
         });
 
@@ -60,7 +62,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAnswer(false);
-                //disableButtons();
             }
         });
 
@@ -76,7 +77,7 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
             }
         });
@@ -92,6 +93,14 @@ public class QuizActivity extends AppCompatActivity {
                     //Not satisfied with this solution, I'll find a better fix
                     mCurrentIndex = 0;
                 }
+            }
+        });
+        mCheatButton = (Button) findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QuizActivity.this, CheatActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -137,13 +146,12 @@ public class QuizActivity extends AppCompatActivity {
         Log.d(TAG, "updating question text", new Exception());
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
-       // enableButtons();
 
     }
 
-//    private void disableButtons(){
-//        mTrueButton.setEnabled(false);
-//        mFalseButton.setEnabled(true);
+//  private void disableButtons(){
+//       mTrueButton.setEnabled(false);
+//        mFalseButton.setEnabled(false);
 //    }
 //
 //    private void enableButtons(){
@@ -157,7 +165,8 @@ public class QuizActivity extends AppCompatActivity {
         int messageResId = 0;
         if (userPressedTrue == answerIsTrue){
             messageResId = R.string.correct_toast;
-//            scores = scores + 1;
+            //scores +=  1;
+            //Log.d(TAG, String.valueOf(scores));
         }
         else{
             messageResId = R.string.incorrect_toast;

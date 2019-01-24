@@ -32,6 +32,14 @@
             />
     </LinearLayout>
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cheat_button"
+                android:text="@string/cheat_button"
+                android:layout_gravity="bottom|center_horizontal"
+                />
+
             <ImageButton
                 android:contentDescription="@string/previous_button"
                 android:id="@+id/previous_button"
